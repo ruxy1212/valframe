@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Letter</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- <script>
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create the frame geometry
+        const frameWidth = 3;
+        const frameHeight = 4;
+        const frameDepth = 0.1;
+        const frameGeometry = new THREE.BoxGeometry(frameWidth, frameHeight, frameDepth);
+
+        // Create the frame material
+        const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x964B00 }); // Brown color
+
+        // Create the frame mesh
+        const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+        scene.add(frameMesh);
+
+        // Create the letter geometry
+        const letterWidth = 2.8;
+        const letterHeight = 3.8;
+        const letterDepth = 0.05;
+        const letterGeometry = new THREE.BoxGeometry(letterWidth, letterHeight, letterDepth);
+
+        // Create the letter material (front and back)
+        const letterMaterialFront = new THREE.MeshPhongMaterial({ color: 0xFFD700 }); // Gold color
+        const letterMaterialBack = new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load('bgblue.png') }); // Load image
+
+        // Create the letter mesh
+        const letterMesh = new THREE.Mesh(letterGeometry, [letterMaterialFront, letterMaterialBack]);
+        letterMesh.position.z = frameDepth / 2;
+        frameMesh.add(letterMesh);
+
+        // Light setup
+        const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xFFFFFF, 0.5);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate the frame
+            frameMesh.rotation.x += 0.01;
+            frameMesh.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Function to flip the letter on click
+        let isFlipped = false;
+        frameMesh.onClick = function () {
+            if (isFlipped) {
+                letterMesh.material = letterMaterialFront;
+            } else {
+                letterMesh.material = letterMaterialBack;
+            }
+            isFlipped = !isFlipped;
+        };
+
+    </script> -->
+
+    <!-- <script>
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Texture setup
+        const loader = new THREE.TextureLoader();
+        const letterFrontTexture = loader.load('bgblue.png'); // Replace with your valentine love letter texture
+        const letterBackTexture = loader.load('bgblue.png'); // Replace with your image for the backside
+
+        // Frame setup
+        const frameWidth = 3.5;
+        const frameHeight = 5;
+        const frameDepth = 0.5;
+        const frameGeometry = new THREE.BoxGeometry(frameWidth, frameHeight, frameDepth);
+        const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x8B4513 }); // Brown color
+        const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+
+        // Letter setup
+        const letterWidth = 3;
+        const letterHeight = 4.5;
+        const letterDepth = 0.1;
+        const letterGeometry = new THREE.PlaneGeometry(letterWidth, letterHeight);
+        const letterMaterialFront = new THREE.MeshBasicMaterial({ map: letterFrontTexture });
+        const letterMaterialBack = new THREE.MeshBasicMaterial({ map: letterBackTexture });
+        const letterMesh = new THREE.Mesh(letterGeometry, letterMaterialFront);
+        letterMesh.position.z = frameDepth / 2;
+
+        // Add letter mesh to frame
+        frameMesh.add(letterMesh);
+        scene.add(frameMesh);
+
+        // Light setup
+        const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xFFFFFF, 0.5);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Function to flip the letter on click
+        let isFlipped = false;
+        frameMesh.onClick = function () {
+            if (isFlipped) {
+                letterMesh.material = letterMaterialFront;
+            } else {
+                letterMesh.material = letterMaterialBack;
+            }
+            isFlipped = !isFlipped;
+        };
+
+    </script> -->
+
+    
+    <script>
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Frame setup
+        const frameWidth = 4;
+        const frameHeight = 6;
+        const frameDepth = 0.5;
+        const frameGeometry = new THREE.BoxGeometry(frameWidth, frameHeight, frameDepth);
+        const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x8B4513 }); // Brown color
+        const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+
+        // Carved edges
+        const edgeGeometry = new THREE.BoxGeometry(frameWidth + 0.1, frameHeight + 0.1, frameDepth + 0.1);
+        const edgeMaterial = new THREE.MeshPhongMaterial({ color: 0x8B4F13 }); // Brown color
+        const edgeMesh = new THREE.Mesh(edgeGeometry, edgeMaterial);
+        frameMesh.add(edgeMesh);
+        edgeMesh.position.set(0, 0, 0.25); // Slightly moved towards the camera to create a carved effect
+
+        // Text setup
+        const frontText = "To my love,\nHappy Valentine's Day!\nI cherish every moment with you.";
+        const backImage = 'bgblue.png'; // Replace with your image for the backside
+
+        // Create front text texture
+        const frontTextCanvas = document.createElement('canvas');
+        const frontTextContext = frontTextCanvas.getContext('2d');
+        frontTextCanvas.width = 512;
+        frontTextCanvas.height = 512;
+        frontTextContext.fillStyle = '#FFD700'; // Gold color
+        frontTextContext.fillRect(0, 0, frontTextCanvas.width, frontTextCanvas.height);
+        frontTextContext.font = '30px Arial';
+        frontTextContext.fillStyle = '#8B0000'; // Dark Red color
+        frontTextContext.textAlign = 'center';
+        frontTextContext.fillText(frontText, frontTextCanvas.width / 2, frontTextCanvas.height / 2);
+
+        const frontTextTexture = new THREE.CanvasTexture(frontTextCanvas);
+
+        // Create front text material
+        const frontTextMaterial = new THREE.MeshPhongMaterial({ map: frontTextTexture });
+
+        // Create front text mesh
+        const frontTextGeometry = new THREE.PlaneGeometry(frameWidth - 0.1, frameHeight - 0.1);
+        const frontTextMesh = new THREE.Mesh(frontTextGeometry, frontTextMaterial);
+        frontTextMesh.position.z = frameDepth / 2;
+
+        // Add front text mesh to frame
+        frameMesh.add(frontTextMesh);
+
+        // Create back image texture
+        const backImageTexture = new THREE.TextureLoader().load(backImage);
+
+        // Create back image material
+        const backImageMaterial = new THREE.MeshPhongMaterial({ map: backImageTexture });
+
+        // Create back image mesh
+        const backImageMesh = new THREE.Mesh(frontTextGeometry, backImageMaterial);
+        backImageMesh.rotation.y = Math.PI; // Flip to show the back side
+        backImageMesh.position.z = -frameDepth / 2;
+
+        // Add back image mesh to frame
+        frameMesh.add(backImageMesh);
+
+        scene.add(frameMesh);
+
+        // Light setup
+        const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xFFFFFF, 0.5);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+// requestAnimationFrame(animate);
+
+            // Rotate the frame
+            frameMesh.rotation.x += 0.01;
+            frameMesh.rotation.y += 0.01;
+
+            // renderer.render(scene, camera);
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Function to flip the letter on click
+        let isFlipped = false;
+        frameMesh.onClick = function () {
+            if (isFlipped) {
+                frontTextMesh.visible = true;
+                backImageMesh.visible = false;
+            } else {
+                frontTextMesh.visible = false;
+                backImageMesh.visible = true;
+            }
+            isFlipped = !isFlipped;
+        };
+
+    </script>
+</body>
+</html>

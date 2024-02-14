@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framed Greeting Card</title>
+</head>
+<body>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.144.2/build/three.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Frame
+        const frameGeometry = new THREE.BoxGeometry(4, 3, 0.2); // Adjust dimensions for thickness
+        const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xd7af42, shininess: 50 }); // Gold with gloss
+        const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+        scene.add(frameMesh);
+
+        // Picture background
+        const pictureTexture = new THREE.TextureLoader().load('bgblue.png');
+        const pictureGeometry = new THREE.PlaneGeometry(3, 2); // Adjust dimensions to match image
+        const pictureMaterial = new THREE.MeshBasicMaterial({ map: pictureTexture });
+        const pictureMesh = new THREE.Mesh(pictureGeometry, pictureMaterial);
+        pictureMesh.position.z = 0.05; // Position slightly behind frame
+        frameMesh.add(pictureMesh); // Add to frame object
+
+        // Message text
+        const messageGeometry = new THREE.TextGeometry('Happy Valentine\'s Day!', {
+            font: 'helvetiker',
+            size: 0.3,
+            height: 0.05
+        });
+        const messageMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const messageMesh = new THREE.Mesh(messageGeometry, messageMaterial);
+        messageMesh.position.y = 0.5; // Adjust position
+        frameMesh.add(messageMesh); // Add to frame object
+
+        // User interaction for rotation
+        let isDragging = false;
+        let startX, startY;
+
+        renderer.domElement.addEventListener('mousedown', (event) => {
+            isDragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+        });
+
+        renderer.domElement.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        renderer.domElement.addEventListener('mousemove', (event) => {
+            if (isDragging) {
+                const deltaX = event.clientX - startX;
+                const deltaY = event.clientY - startY;
+                frameMesh.rotation.y += deltaX * 0.01;
+                frameMesh.rotation.x += deltaY * 0.01;
+                startX = event.clientX;
+                startY = event.clientY;
+            }
+        });
+
+        // camera.position.z = 5;
+
+        // const animate = () => {
+        //     requestAnimationFrame(animate);
+        //     renderer.render(scene, camera);
+        // };
+
+        // animate();
+        
+
+        // const scene = new THREE.Scene();
+        // const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // const renderer = new THREE.WebGLRenderer();
+        // renderer.setSize(window.innerWidth, window.innerHeight);
+        // document.body.appendChild(renderer.domElement);
+
+        // // Background with image or marble texture
+        // let backgroundMaterial;
+        // const isImage = true; // Change to false for marble texture
+        // if (isImage) {
+        //     const backgroundTexture = new THREE.TextureLoader().load('bgblue.png');
+        //     backgroundMaterial = new THREE.MeshBasicMaterial({ map: backgroundTexture });
+        // } else {
+        //     backgroundMaterial = new THREE.MeshBasicMaterial({ map: new THREE.MarbleMaterial() });
+        // }
+        // const backgroundPlane = new THREE.PlaneGeometry(5, 3);
+        // const backgroundMesh = new THREE.Mesh(backgroundPlane, backgroundMaterial);
+        // backgroundMesh.position.z = -2;
+        // scene.add(backgroundMesh);
+
+        // // Card frame
+        // const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        // const frameGeometry = new THREE.BoxGeometry(4, 2.5, 0.1);
+        // const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+        // frameMesh.position.z = -1;
+        // scene.add(frameMesh);
+
+        // // Valentine message text
+        // const messageMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        // const messageGeometry = new THREE.TextGeometry('Happy Valentine\'s Day!', {
+        //     font: 'helvetiker',
+        //     size: 0.4,
+        //     height: 0.05
+        // });
+        // const messageMesh = new THREE.Mesh(messageGeometry, messageMaterial);
+        // messageMesh.position.y = 0.7;
+        // messageMesh.position.z = -0.9;
+        // scene.add(messageMesh);
+
+        // // User interaction for rotation
+        // let isDragging = false;
+        // let startX, startY;
+
+        // renderer.domElement.addEventListener('mousedown', (event) => {
+        //     isDragging = true;
+        //     startX = event.clientX;
+        //     startY = event.clientY;
+        // });
+
+        // renderer.domElement.addEventListener('mouseup', () => {
+        //     isDragging = false;
+        // });
+
+        // renderer.domElement.addEventListener('mousemove', (event) => {
+        //     if (isDragging) {
+        //         const deltaX = event.clientX - startX;
+        //         const deltaY = event.clientY - startY;
+        //         frameMesh.rotation.y += deltaX * 0.01;
+        //         frameMesh.rotation.x += deltaY * 0.01;
+        //         startX = event.clientX;
+        //         startY = event.clientY;
+        //     }
+        // });
+
+        camera.position.z = 5;
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        };
+
+        animate();
+    </script>
+</body>
+</html>

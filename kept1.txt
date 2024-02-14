@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Greeting Card</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script> -->
+  <script type="module">
+    // Simple three.js example
+import * as THREE from "https://unpkg.com/three@0.112/build/three.module.js";
+import { OrbitControls } from "https://unpkg.com/three@0.112/examples/jsm/controls/OrbitControls.js";
+
+var mesh, renderer, scene, camera, controls;
+
+init();
+animate();
+
+
+function init() {
+
+    // renderer
+    renderer = new THREE.WebGLRenderer({
+  antialias: true
+});
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    document.body.appendChild( renderer.domElement );
+
+    // scene
+    scene = new THREE.Scene();
+    
+    // camera
+    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.set( 20, 20, 20 );
+
+    // controls
+    controls = new OrbitControls( camera, renderer.domElement );
+    
+    // ambient
+    scene.add( new THREE.AmbientLight( 0xffffff ) );
+    
+    // light
+    var light = new THREE.DirectionalLight( 0xffffff, 1 );
+    light.position.set( 20,20, 40 );
+    scene.add( light );
+    
+    var loader = new THREE.CubeTextureLoader();
+    loader.setCrossOrigin( "" );
+    loader.setPath( 'https://threejs.org/examples/textures/cube/pisa/' );
+
+    var cubeTexture = loader.load( [
+    'px.png', 'nx.png',
+    'py.png', 'ny.png',
+    'pz.png', 'nz.png'
+    ] );
+
+    scene.background = cubeTexture;
+    
+    let cubeMat = new THREE.MeshStandardMaterial( {
+        color: 0x964B00,
+        envMap: cubeTexture,
+        metalness: 5 / 9,
+        roughness: 1 - 6 / 9,
+    } );
+    let backgroundTexture = new THREE.TextureLoader().load('bgblue.png');
+    let backgroundMat = new THREE.MeshBasicMaterial({
+        map: backgroundTexture,
+        side: THREE.DoubleSide, // Ensure texture is visible from both sides
+    });
+    let cubeGeometry = createBoxWithRoundedEdges(15, 9, 1, 2 / 9, 16);
+    let backgroundGeometry = createBackgroundGeometry(15, 9, 0.1, 2 / 9, 16);
+
+    let cubeMesh = new THREE.Mesh(cubeGeometry, cubeMat);
+    let backgroundFront = new THREE.Mesh(backgroundGeometry, backgroundMat);
+    let backgroundBack = new THREE.Mesh(backgroundGeometry, backgroundMat);
+    backgroundFront.position.z = -0.5; // Move towards the center of the cube
+backgroundBack.position.z = 0.5; // Move towards the center of the cube
+
+    // Add all meshes to the scene
+    scene.add(cubeMesh, backgroundFront, backgroundBack);
+    }
+
+    function animate() {
+
+        requestAnimationFrame( animate );
+        
+        //controls.update();
+
+        renderer.render( scene, camera );
+
+    }
+
+    function createBoxWithRoundedEdges( width, height, depth, radius0, smoothness ) {
+    let shape = new THREE.Shape();
+    let eps = 0.00001;
+    let radius = radius0 - eps;
+    shape.absarc( eps, eps, eps, -Math.PI / 2, -Math.PI, true );
+    shape.absarc( eps, height -  radius * 2, eps, Math.PI, Math.PI / 2, true );
+    shape.absarc( width - radius * 2, height -  radius * 2, eps, Math.PI / 2, 0, true );
+    shape.absarc( width - radius * 2, eps, eps, 0, -Math.PI / 2, true );
+    let geometry = new THREE.ExtrudeBufferGeometry( shape, {
+        depth: depth - radius0 * 2,
+        bevelEnabled: true,
+        bevelSegments: smoothness * 2,
+        steps: 1,
+        bevelSize: radius,
+        bevelThickness: radius0,
+        curveSegments: smoothness
+    });
+    
+    geometry.center();
+    
+    return geometry;
+    }
+    function createBackgroundGeometry(width, height, depth, radius0, smoothness) {
+    let margin = 0.5; // Adjust this value to control the margin
+
+    let shape = new THREE.Shape();
+    let eps = 0.00001;
+    let radius = radius0 - eps;
+    
+    // Define the shape with a margin
+    shape.absarc(eps + margin, eps + margin, eps, -Math.PI / 2, -Math.PI, true);
+    shape.absarc(eps + margin, height - radius * 2 - margin, eps, Math.PI, Math.PI / 2, true);
+    shape.absarc(width - radius * 2 - margin, height - radius * 2 - margin, eps, Math.PI / 2, 0, true);
+    shape.absarc(width - radius * 2 - margin, eps + margin, eps, 0, -Math.PI / 2, true);
+    
+    // Create the extruded geometry with a smaller depth to accommodate the margin
+    let geometry = new THREE.ExtrudeBufferGeometry(shape, {
+        depth: depth - radius0 * 2,
+        bevelEnabled: true,
+        bevelSegments: smoothness * 2,
+        steps: 1,
+        bevelSize: radius,
+        bevelThickness: radius0,
+        curveSegments: smoothness,
+    });
+
+    geometry.center();
+
+    return geometry;
+}
+  </script>
+</body>
+</html>
