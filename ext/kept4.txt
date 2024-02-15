@@ -181,6 +181,24 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
 
+let entriesSeen = new Set(); // set of entries to skip initial resize call
+
+const obs = new ResizeObserver((entries) => {
+    for (let entry of entries) {
+        if (!entriesSeen.has(entry.target)) {
+            // do nothing during initial call
+            // just mark element as seen
+            entriesSeen.add(entry.target);
+            console.log('resize ignored');
+        } else {
+            console.log('resize detected');
+            // onWindowResize;
+            // render();
+        }
+    }
+});
+obs.observe(document.body);
+
 function animate() {
 
 requestAnimationFrame( animate );

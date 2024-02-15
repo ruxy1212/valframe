@@ -15,7 +15,7 @@ import {
 	TOUCH,
 	Vector2,
 	Vector3
-} from "../../../build/three.module.js";
+} from "../src/three.module.js";
 
 // This set of controls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
@@ -144,7 +144,7 @@ var OrbitControls = function ( object, domElement ) {
 
 		// so camera.up is the orbit axis
 		var quat = new Quaternion().setFromUnitVectors( object.up, new Vector3( 0, 1, 0 ) );
-		var quatInverse = quat.clone().inverse();
+		var quatInverse = quat.clone().invert();
 
 		var lastPosition = new Vector3();
 		var lastQuaternion = new Quaternion();

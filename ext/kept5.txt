@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Valentine Frame</title>
-  <link rel="shortcut icon" href="img/icon.jpg" type="image/jpeg">
+  <link rel="shortcut icon" href="icon.jpg" type="image/jpeg">
   <meta property="og:locale" content="en_US" />
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="Valentine Framed Card" />
 	<meta property="og:url" content="https://myluvcard.netlify.app/" />
 	<meta property="og:site_name" content="Valentine Framed Card" />
-	<meta property="og:image" content="img/icon.jpg" />
+	<meta property="og:image" content="icon.jpg" />
 	<meta property="og:image:type" content="image/jpeg" />
   <script>
     let msgs = [
@@ -39,7 +39,6 @@
     .scene_ {
         margin: 0;
         overflow: hidden;
-        cursor:grab;
     }
     canvas {
       display: block;
@@ -67,8 +66,7 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: inset 0 0 5px 4px #888;
-        background-image: url(img/bgwhite.png);
-        cursor: pointer;
+        background-image: url(bgwhite.png);
     }
   </style>
 </head>
@@ -231,7 +229,7 @@ let cubeMat = new THREE.MeshStandardMaterial( {
     var geometry1 = ProfiledContourGeometry(profileShape1, contour1, true);
     geometry1.center();
     var fullProfile1 = new THREE.Mesh(geometry1, cubeMat);
-    let backgroundTexture = new THREE.TextureLoader().load('img/bgwhite.png');
+    let backgroundTexture = new THREE.TextureLoader().load('bgwhite.png');
     backgroundTexture.wrapT = THREE.RepeatWrapping;
     backgroundTexture.wrapS = THREE.RepeatWrapping;
 
@@ -441,9 +439,9 @@ function createBackgroundGeometry(width, height, depth, radius0, smoothness) {
       );
 
       let cloneProfile = profile.clone();
-      cloneProfile.applyMatrix4(shiftMatrix);
-      cloneProfile.applyMatrix4(rotationMatrix);
-      cloneProfile.applyMatrix4(translationMatrix);
+   		shiftMatrix.applyToBufferAttribute(cloneProfile);
+      rotationMatrix.applyToBufferAttribute(cloneProfile);
+      translationMatrix.applyToBufferAttribute(cloneProfile);
 
       profilePoints.set(cloneProfile.array, cloneProfile.count * i * 3);
       if (openEnded === false && (i === 0 || i === contour.length - 1)){
@@ -456,7 +454,7 @@ function createBackgroundGeometry(width, height, depth, radius0, smoothness) {
     });
 
     let fullProfileGeometry = new THREE.BufferGeometry();
-    fullProfileGeometry.setAttribute("position", new THREE.BufferAttribute(profilePoints, 3));
+    fullProfileGeometry.addAttribute("position", new THREE.BufferAttribute(profilePoints, 3));
     let index = [];
 		
     let lastCorner = contourClosed == false ? contour.length - 1: contour.length;
