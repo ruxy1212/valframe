@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="js/style.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/script.js"></script>
+    <title>VAL</title>
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+            <div class="valentines">
+                <div class="envelope">
+                    <div class="lid"></div>
+                    <span class="open_text">Open!</span>
+                </div>
+                <div class="front"></div>
+                <div class="card" style="top: 0px;">
+                    <div class="text">Will you<br> be my <br>Valentine?</div>
+                    <div class="heart"></div>
+                    <div class="hearts">
+                        <div class="one"></div>
+                        <div class="two"></div>
+                        <div class="three"></div>
+                        <div class="four"></div>
+                        <div class="five"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="shadow"></div>
+        </div>
+        <div class="verdict">
+            <div class="buttons-container">
+                <button class="button"  onclick="document.querySelector('.main').classList.add('unsee'); document.querySelector('.accept').classList.remove('unsee')">Yes</button>
+                <button class="button"  onclick="document.querySelector('.main').classList.add('unsee'); document.querySelector('.reject').classList.remove('unsee');document.querySelector('.verdict').style.display = 'none';document.querySelector('.open_text').style.display = 'block';">No</button>
+            </div>
+        </div>
+    </div>
+    <div class="accept unsee">
+        <h1 class="header_text">Yippie!!! </h1>
+        <img src="js/200.webp" alt="Accepted!" style="box-shadow: 0px 2px 10px 0px black;">
+        <!-- <div>
+            <div class="buttons-container btn_cont">
+                <button class="button" >Yes</button>
+            </div>
+        </div> -->
+    </div>
+    <div class="reject unsee">
+        <h1 class="header_text">Go Back and click that yes or this cute dog is gonna shoot you</h1>
+        <img src="js/500.webp" alt="Rejected?">
+        <div>
+            <div class="buttons-container btn_cont">
+                <button class="button" onclick="document.querySelector('.reject').classList.add('unsee'); document.querySelector('.main').classList.remove('unsee');">Back</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
