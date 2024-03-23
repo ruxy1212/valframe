@@ -7,6 +7,14 @@
     <script src="js/jquery.js"></script>
     <script src="js/script.js"></script>
     <title>VAL</title>
+    <script>
+        let m_reci = "";
+          const params = new URLSearchParams(window.location.search);
+          const y_reci = params.get('t');
+          if(y_reci){
+              m_reci = '&c='+y_reci;
+          }
+    </script>
 </head>
 <body>
     <div class="main">
@@ -41,11 +49,12 @@
     <div class="accept unsee">
         <h1 class="header_text">Yippie!!! </h1>
         <img src="js/200.webp" alt="Accepted!" style="box-shadow: 0px 2px 10px 0px black;">
-        <!-- <div>
-            <div class="buttons-container btn_cont">
-                <button class="button" >Yes</button>
-            </div>
-        </div> -->
+        <div class="text" style="position: static; margin-top: 20px; margin-bottom: 20px;">Where do you<br> want to celebrate?</div>
+        <div class="btns-cont">
+            <button class="btn" onclick="window.location='/yippie/?city=paris'+m_reci">Paris</button>
+            <button class="btn" onclick="window.location='/yippie/?city=venezia'+m_reci">Venice</button>
+            <button class="btn" onclick="window.location='/yippie/?city=bali'+m_reci">Bali</button>
+        </div>
     </div>
     <div class="reject unsee">
         <h1 class="header_text">Go Back and click that yes or this cute dog is gonna shoot you</h1>

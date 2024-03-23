@@ -1,514 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine Frame</title>
-  <link rel="shortcut icon" href="img/icon.jpg" type="image/jpeg">
-  <meta property="og:locale" content="en_US" />
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Valentine Framed Card" />
-	<meta property="og:url" content="https://myluvcard.netlify.app/" />
-	<meta property="og:site_name" content="Valentine Framed Card" />
-	<meta property="og:image" content="img/icon.jpg" />
-	<meta property="og:image:type" content="image/jpeg" />
-  <script>
-    let msgs = [
-        "I'm yours. Sorry, no refunds or exchanges. Happy Valentine's Day!",
-        "Happy V-Day! I got you this card. Now where's my medal?",
-        "Hope your heart is full of love and your mouth is full of chocolate.",
-        "I'm so thankful to have found someone as weird as me. Happy Valentine's Day!",
-        "You have the worst taste in TV shows, and I'm still madly in love with you. That's how you know it's real.",
-        "I love you because you're the person who annoys me the least. Happy V-Day!",
-        "You know how I knew you were the one? You're the only person I can stand for longer than 6 hours.",
-        "Happy V-Day! I know loving me isn't always the easiest. But trust me, I'm worth it."
-    ];
-    var msg_ = msgs[Math.floor(Math.random()*msgs.length)];
-    var winSize = window.innerWidth;
-  </script>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .scene_ {
-        margin: 0;
-        overflow: hidden;
-        cursor:grab;
-    }
-    canvas {
-      display: block;
-    }
-    .label {
-        text-align: center;
-        width: 100%;
-        font-size: 32px;
-        color: rgb(231, 56, 12);
-        font-family: sans-serif;
-    }
-    .label .head_ {
-        font-weight: bold;
-        margin: 30px 0;
-    }
-    .label .foot_ {
-        font-weight: bold;
-        font-style: italic;
-        margin: 20px 0;
-    }
-    .unsee {
-        display: none;
-    }
-    .stage_ .canvas_ {
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px 4px #888;
-        background-image: url(img/bgwhite.png);
-        cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="js/style.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/script.js"></script>
+    <title>VAL</title>
+    <script>
+        let m_reci = "";
+          const params = new URLSearchParams(window.location.search);
+          const y_reci = params.get('t');
+          if(y_reci){
+              m_reci = '&c='+y_reci;
+          }
+    </script>
 </head>
 <body>
-    <div class="scene_ unsee"></div>
-    <div class="stage_">
-        <canvas class="canvas_" ></canvas>
+    <div class="main">
+        <div class="container">
+            <div class="valentines">
+                <div class="envelope">
+                    <div class="lid"></div>
+                    <span class="open_text">Open Me!</span>
+                </div>
+                <div class="front"></div>
+                <div class="card" style="top: 0px;">
+                    <div class="text">Will you<br> be my <br>Valentine?</div>
+                    <div class="heart"></div>
+                    <div class="hearts">
+                        <div class="one"></div>
+                        <div class="two"></div>
+                        <div class="three"></div>
+                        <div class="four"></div>
+                        <div class="five"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="shadow"></div>
+        </div>
+        <div class="verdict">
+            <div class="buttons-container">
+                <button class="button"  onclick="document.querySelector('.main').classList.add('unsee'); document.querySelector('.accept').classList.remove('unsee')">Yes</button>
+                <button class="button"  onclick="document.querySelector('.main').classList.add('unsee'); document.querySelector('.reject').classList.remove('unsee');document.querySelector('.verdict').style.display = 'none';document.querySelector('.open_text').style.display = 'block';">No</button>
+            </div>
+        </div>
     </div>
-    <script async src="src/es-module-shims.js"></script>
-    <script>
-      var stage_ = document.querySelector('.stage_');
-      var scene_ = document.querySelector('.scene_'), canvas_ = stage_.querySelector('.canvas_'), multiplier_ = 1;
-      var sy1_, sy2_, sy3_, sy4_, sy5_;
-    if(winSize < 600){
-        canvas_.width = Math.floor(winSize*0.8);
-        multiplier_ = 0.6;
-        canvas_.height = 600;
-        sy1_ = 40; sy2_ = 50; sy3_ = 60; sy4_ = 70; sy5_ = 80;
-    }else{
-        canvas_.width = 630;
-        canvas_.height = 450;
-        sy1_ = 50; sy2_ = 60; sy3_ = 80; sy4_ = 90; sy5_ = 100;
-        // width=630 height=450
-    }
-let ctx = stage_.querySelector('canvas').getContext('2d');
-dashLen = 220*multiplier_, dashOffset = dashLen, speed = 45,
-txt = msg_, x = 20*multiplier_, y = 60*multiplier_, i = 0, lineMax = canvas_.width - 30; //"STROKE-ON CANVAS"
-
-ctx.font = "50px Comic Sans MS, cursive, TSCu_Comic, sans-serif"; 
-ctx.lineWidth = 5*multiplier_; ctx.lineJoin = "round"; ctx.globalAlpha = 2/3;
-ctx.strokeStyle = ctx.fillStyle = "#1f2f90";
-
-(function loop() {
-    ctx.clearRect(0, y-sy1_, stage_.width, sy5_); // Clear the area where characters are drawn
-    ctx.setLineDash([dashLen - dashOffset, dashOffset - speed]); // create a long dash mask
-    dashOffset -= speed; // reduce dash length
-    ctx.strokeText(txt[i], x, y); // stroke letter
-
-    if (dashOffset > 0) {
-        requestAnimationFrame(loop); // animate
-    } else {
-        ctx.fillText(txt[i], x, y); // fill final letter
-        dashOffset = dashLen; // prep next char
-        x += ctx.measureText(txt[i]).width + ctx.lineWidth * Math.random();
-        // Check if the width exceeds the lineMax
-        if (x > lineMax) {
-            // Check if the next character is a space
-            if (txt[i] !== ' ' && txt[i + 1] !== ' ') {
-                // Backtrack to the last space character
-                while (i >= 0 && txt[i] !== ' ') {
-                    i--;
-                    let letterWidth = ctx.measureText(txt[i]).width; 
-                    x -= letterWidth + ctx.lineWidth; // Move back by the width of the letter
-                    ctx.clearRect(x, y-sy2_, letterWidth+ctx.lineWidth, sy4_);
-                }
-                // Move to the next line
-                x = 21; // Reset x to the beginning of the line
-                y += sy3_; // Move down to the next line
-            } else {
-                // Move to the next line without breaking the word
-                x = 21; // Reset x to the beginning of the line
-                y += sy3_; // Move down to the next line
-            }
-            // Clear the area where characters are drawn for the next line
-            ctx.clearRect(0, y-sy2_, stage_.width, sy5_);
-        }
-        ctx.setTransform(1, 0, 0, 1, 0, 3 * Math.random()); // random y-delta
-        ctx.rotate(Math.random() * 0.005); // random rotation
-        i++;
-        if (i < txt.length) requestAnimationFrame(loop);
-        else {
-            setTimeout(() => {
-                scene_.classList.remove('unsee');
-                stage_.classList.add('unsee');
-                // console.log("Three seconds have passed. Performing action...");
-            }, 1500);
-        }
-    }
-})();
-
-    </script>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "/src/three.module.js"
-            }
-        }
-    </script>
-
-    
-    <script type="module">
-       
-        import * as THREE from 'three';
-import { OrbitControls } from "/src/OrbitControls.js";
-import { FontLoader } from '/src/FontLoader.js';
-import { TextGeometry } from '/src/TextGeometry.js';
-import { CSS3DRenderer, CSS3DObject } from '/src/CSS3DRenderer.js';
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
-camera.position.set( 100, 100, 200 );
-var renderer = new THREE.WebGLRenderer({
-  antialias: true
-});
-renderer.setSize(window.innerWidth, window.innerHeight);
-var labelRenderer = new CSS3DRenderer();
-labelRenderer.setSize( innerWidth, innerHeight );
-labelRenderer.domElement.style.position = 'absolute';
-labelRenderer.domElement.style.top = '0px';
-scene_.appendChild(renderer.domElement);
-scene_.appendChild( labelRenderer.domElement );
-
-var controls = new OrbitControls(camera, labelRenderer.domElement);
-
-var light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set( 20,20, 40 );
-scene.add(light);
-scene.add(new THREE.AmbientLight(0xffffff, 1));
-
-var loader = new THREE.CubeTextureLoader();
-    loader.setCrossOrigin( "" );
-    loader.setPath( 'bg/' );
-
-    var cubeTexture = loader.load( [
-    'mobile_l.jpg', 'mobile_r.jpg',
-    'mobile_u.jpg', 'mobile_d.jpg',
-    'mobile_b.jpg', 'mobile_f.jpg',
-    ] );
-    scene.background = cubeTexture;
-var m_width = 75;
-var m_height = 100;
-
-var pos = new THREE.Vector3(0, 0, 3);
-var normal = new THREE.Vector3(0, 0, 1);
-
-var cNormal = new THREE.Vector3();
-var cPos = new THREE.Vector3();
-var m4 = new THREE.Matrix4();
-var div = document.createElement( 'div' );
-
-var profileShape1 = new THREE.Shape();
-profileShape1.moveTo(0, 0);
-profileShape1.lineTo(5, 0);
-profileShape1.lineTo(5,5);
-profileShape1.lineTo(2.5, 5);
-profileShape1.lineTo(2.5, 2.5);
-profileShape1.lineTo(0, 2.5);
-
-var contour1 = [
-  new THREE.Vector2(0, 0),
-  new THREE.Vector2(m_width, 0),
-  new THREE.Vector2(m_width,m_height),
-  new THREE.Vector2(0,m_height),
-];
-let cubeMat = new THREE.MeshStandardMaterial( {
-        color: 0x964B00,
-        envMap: cubeTexture,
-        metalness: 6 / 9,
-        roughness: 1 - 3 / 9,
-    } );
-    var geometry1 = ProfiledContourGeometry(profileShape1, contour1, true);
-    geometry1.center();
-    var fullProfile1 = new THREE.Mesh(geometry1, cubeMat);
-    let backgroundTexture = new THREE.TextureLoader().load('img/bgwhite.png');
-    backgroundTexture.wrapT = THREE.RepeatWrapping;
-    backgroundTexture.wrapS = THREE.RepeatWrapping;
-
-    // Set how many times you want the texture to repeat
-    backgroundTexture.repeat.set(1/75, 1/100);
-    let backgroundMat = new THREE.MeshBasicMaterial({
-        map: backgroundTexture,
-    });
-    let backfaceMat = new THREE.MeshBasicMaterial({
-        color: 0x333333,
-    });
-    let backgroundGeometry = createBackgroundGeometry(m_width-2, m_height-2, 0.2, 2 / 9, 16);
-    let backgroundBack = new THREE.Mesh(backgroundGeometry, backfaceMat);
-    let backgroundFront = new THREE.Mesh(backgroundGeometry, backgroundMat);
-    backgroundFront.position.z = -1.5;
-    backgroundBack.position.z = -2;
-    scene.add(backgroundFront, fullProfile1, backgroundBack); //
-
-div.className = 'label';
-div.innerHTML = `<div class='head_'>Hey Princesa,</div>
-<div>${msg_}</div>
-<div class='foot_'>~ Russell</div>
-`;
-div.style.width = 300+'px';
-var label = new CSS3DObject( div );
-label.position.copy(pos);
-label.scale.set(0.2, 0.2, 1);
-backgroundFront.add( label );
-createHeart(backgroundFront);
-createHeart(backgroundFront,28,38,1.1,.05,.05,.07);
-createHeart(backgroundFront,28,-33,0.8,.04,.04,.06);
-createHeart(backgroundFront,25,-40,1.1,.05,.05,.07);
-
-
-function onSeeSomething(){
-    controls = new TrackballControls( camera, renderer.domElement );
-				controls.rotateSpeed = 4;
-
-				window.addEventListener( 'resize', onWindowResize );
-
-				// Block iframe events when dragging camera
-
-				const blocker = document.getElementById( 'blocker' );
-				blocker.style.display = 'none';
-
-				controls.addEventListener( 'start', function () {
-
-					blocker.style.display = '';
-
-				} );
-				controls.addEventListener( 'end', function () {
-
-					blocker.style.display = 'none';
-
-				} );
-}
-
-function createHeart(mate, a_=25, b_=45, c_=1.5, x_=.05, y_=.05, z_=.08){
-    let heartShape = new THREE.Shape();
-    heartShape.moveTo(25, 25);
-    heartShape.bezierCurveTo(25, 25, 20, 0, 0, 0);
-    heartShape.bezierCurveTo(-30, 0, -30, 35, -30, 35);
-    heartShape.bezierCurveTo(-30, 55, -10, 77, 25, 95);
-    heartShape.bezierCurveTo(60, 77, 80, 55, 80, 35);
-    heartShape.bezierCurveTo(80, 35, 80, 0, 50, 0);
-    heartShape.bezierCurveTo(35, 0, 25, 25, 25, 25);
-
-    let geometry = new THREE.ExtrudeGeometry(heartShape, {
-        depth: 8,
-        bevelEnabled: true,
-        bevelSegments: 2,
-        steps: 2,
-        bevelSize: 20,
-        bevelThickness: 20
-    } );
-
-    let material = new THREE.MeshPhongMaterial({
-      color: 0xef380c,
-      flatShading: true
-    });
-
-    let heart = new THREE.Mesh(
-        geometry,
-        material
-    );
-
-      heart.scale.set( x_, y_, z_);
-
-      heart.rotation.x = Math.PI;
-      heart.position.x = a_;
-      heart.position.y = b_;
-      heart.position.z = c_;
-      mate.add(heart);
-}
-
-window.addEventListener( 'resize', onWindowResize, false );
-
-render();
-function onWindowResize() {
-
-camera.aspect = window.innerWidth / window.innerHeight;
-camera.updateProjectionMatrix();
-renderer.setSize( window.innerWidth, window.innerHeight );
-labelRenderer.setSize( window.innerWidth, window.innerHeight );
-
-}
-
-function animate() {
-
-requestAnimationFrame( animate );
-controls.update();
-renderer.render( scene, camera );
-
-}
-function render() {
-  requestAnimationFrame(render);
-	
-  cNormal.copy(normal).applyMatrix3(backgroundFront.normalMatrix);
-  cPos.copy(pos).applyMatrix4(m4.multiplyMatrices(camera.matrixWorldInverse, backgroundFront.matrixWorld));
-  let d = cPos.negate().dot(cNormal);
-  
-    div.style.visibility = d < 0 ? "hidden" : "visible";
-  
-	renderer.render(scene, camera);
-    labelRenderer.render( scene, camera );
-}
-function createBackgroundGeometry(width, height, depth, radius0, smoothness) {
-    let margin = 0; // Adjust this value to control the margin
-
-    let shape = new THREE.Shape();
-    let eps = 0.00001;
-    let radius = radius0 - eps;
-    
-    // Define the shape with a margin
-    shape.absarc(eps + margin, eps + margin, eps, -Math.PI / 2, -Math.PI, true);
-    shape.absarc(eps + margin, height - radius * 2 - margin, eps, Math.PI, Math.PI / 2, true);
-    shape.absarc(width - radius * 2 - margin, height - radius * 2 - margin, eps, Math.PI / 2, 0, true);
-    shape.absarc(width - radius * 2 - margin, eps + margin, eps, 0, -Math.PI / 2, true);
-    
-    // Create the extruded geometry with a smaller depth to accommodate the margin
-    let geometry = new THREE.ExtrudeBufferGeometry(shape, {
-        depth: depth - radius0 * 2,
-        bevelEnabled: true,
-        bevelSegments: smoothness * 2,
-        steps: 1,
-        bevelSize: radius,
-        bevelThickness: radius0,
-        curveSegments: smoothness,
-    });
-
-    geometry.center();
-
-    return geometry;
-}
-
- function ProfiledContourGeometry(profileShape, contour, contourClosed, openEnded) {
-    
-  	contourClosed = contourClosed !== undefined ? contourClosed : true;
-    openEnded = openEnded !== undefined ? openEnded : false;
-    openEnded = contourClosed === true ? false : openEnded;
-		
-    let profileGeometry = new THREE.ShapeBufferGeometry(profileShape);
-    let flipProfileGeometry = flipShapeGeometry(profileGeometry);
-    profileGeometry.rotateX(Math.PI * 0.5);
-    let profile = profileGeometry.attributes.position;
-		
-    let addEnds = openEnded === false ? 2 : 0;
-    let profilePoints = new Float32Array(profile.count * (contour.length + addEnds) * 3);
-		
-    let endProfiles = [];
-    
-    for (let i = 0; i < contour.length; i++) {
-      let v1 = new THREE.Vector2().subVectors(contour[i - 1 < 0 ? contour.length - 1 : i - 1], contour[i]);
-      let v2 = new THREE.Vector2().subVectors(contour[i + 1 == contour.length ? 0 : i + 1], contour[i]);
-      let angle = v2.angle() - v1.angle();
-      let halfAngle = angle * 0.5;
-			
-      let hA = halfAngle;
-      let tA = v2.angle() + Math.PI * 0.5;
-      if (!contourClosed){
-      	if (i == 0 || i == contour.length - 1) {hA = Math.PI * 0.5;}
-        if (i == contour.length - 1) {tA = v1.angle() - Math.PI * 0.5;}
-      }
-      
-      let shift = Math.tan(hA - Math.PI * 0.5);
-      let shiftMatrix = new THREE.Matrix4().set(
-             1, 0, 0, 0, 
-        -shift, 1, 0, 0,
-             0, 0, 1, 0,
-             0, 0, 0, 1
-      );
-			
-      
-      let tempAngle = tA;
-      let rotationMatrix = new THREE.Matrix4().set(
-        Math.cos(tempAngle), -Math.sin(tempAngle), 0, 0,
-        Math.sin(tempAngle),  Math.cos(tempAngle), 0, 0,
-                          0,                    0, 1, 0,
-                          0,                    0, 0, 1
-      );
-
-      let translationMatrix = new THREE.Matrix4().set(
-        1, 0, 0, contour[i].x,
-        0, 1, 0, contour[i].y,
-        0, 0, 1, 0,
-        0, 0, 0, 1,
-      );
-
-      let cloneProfile = profile.clone();
-      cloneProfile.applyMatrix4(shiftMatrix);
-      cloneProfile.applyMatrix4(rotationMatrix);
-      cloneProfile.applyMatrix4(translationMatrix);
-
-      profilePoints.set(cloneProfile.array, cloneProfile.count * i * 3);
-      if (openEnded === false && (i === 0 || i === contour.length - 1)){
-      	endProfiles.push(cloneProfile);
-      }
-    }
-    
-    endProfiles.forEach((ep, idx) => {
-    	profilePoints.set(ep.array, ep.count * (contour.length + idx) * 3)
-    });
-
-    let fullProfileGeometry = new THREE.BufferGeometry();
-    fullProfileGeometry.setAttribute("position", new THREE.BufferAttribute(profilePoints, 3));
-    let index = [];
-		
-    let lastCorner = contourClosed == false ? contour.length - 1: contour.length;
-    for (let i = 0; i < lastCorner; i++) {
-      for (let j = 0; j < profile.count; j++) {
-        let currCorner = i;
-        let nextCorner = i + 1 == contour.length ? 0 : i + 1;
-        let currPoint = j;
-        let nextPoint = j + 1 == profile.count ? 0 : j + 1;
-
-        let a = nextPoint + profile.count * currCorner;
-        let b = currPoint + profile.count * currCorner;
-        let c = currPoint + profile.count * nextCorner;
-        let d = nextPoint + profile.count * nextCorner;
-
-
-        index.push(a, b, d);
-        index.push(b, c, d);
-      }
-    }
-    
-    if (openEnded === false){
-    	// add indices from profile geometries
-      flipProfileGeometry.index.array.forEach(i => {index.push(i +  profile.count * (contour.length))});
-      profileGeometry.index.array.forEach(i =>{index.push(i + profile.count * (contour.length + 1))});
-      
-    }
-
-    fullProfileGeometry.setIndex(index);
-    fullProfileGeometry.computeVertexNormals();
-
-    return fullProfileGeometry;
-  }
-  
-  function flipShapeGeometry(shapeGeometry) {
-    let flipGeom = shapeGeometry.clone();
-    for (let i = 0; i < flipGeom.attributes.position.count; i++) {
-      flipGeom.attributes.position.array[i * 3] *= -1;
-    }
-    flipGeom.attributes.position.needsUpdate = true;
-
-    var index = flipGeom.index.array;
-    for (let i = 0; i < index.length; i += 3) {
-      let v2 = index[i + 1];
-      let tmp = v2;
-      let v3 = index[i + 2];
-      index[i + 1] = index[i + 2];
-      index[i + 2] = tmp;
-    }
-    flipGeom.computeVertexNormals();
-    return flipGeom;
-  } 
-  </script>
+    <div class="accept unsee">
+        <h1 class="header_text">Yippie!!! </h1>
+        <img src="js/200.webp" alt="Accepted!" style="box-shadow: 0px 2px 10px 0px black;">
+        <div class="text" style="position: static; margin-top: 20px; margin-bottom: 20px;">Where do you<br> want to celebrate?</div>
+        <div class="btns-cont">
+            <button class="btn" onclick="window.location='yippie/?city=paris'+m_reci">Paris</button>
+            <button class="btn" onclick="window.location='yippie/?city=venezia'+m_reci">Venice</button>
+            <button class="btn" onclick="window.location='yippie/?city=bali'+m_reci">Bali</button>
+        </div>
+    </div>
+    <div class="reject unsee">
+        <h1 class="header_text">Go Back and click that yes or this cute dog is gonna shoot you</h1>
+        <img src="js/500.webp" alt="Rejected?">
+        <div>
+            <div class="buttons-container btn_cont">
+                <button class="button" onclick="document.querySelector('.reject').classList.add('unsee'); document.querySelector('.main').classList.remove('unsee');">Back</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
